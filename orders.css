@@ -1,0 +1,30 @@
+/* --- Table & Order Specifics --- */
+.table-container {
+    background: var(--white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th { background: var(--navy-blue); color: var(--white); padding: 15px; text-align: left; }
+td { padding: 15px; border-bottom: 1px solid #eee; color: var(--deep-navy); }
+
+/* Status Badges */
+.status-badge { padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; color: white; }
+.pending { background-color: #f1c40f; }
+.shipping { background-color: #3498db; }
+.delivered { background-color: #27ae60; }
+
+/* Status Form */
+.status-form { display: flex; gap: 5px; }
+.status-select { padding: 5px; border: 1px solid var(--navy-blue); border-radius: 4px; }
+.btn-update { 
+    background-color: var(--deep-navy); 
+    color: var(--white); 
+    border: none; 
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+.btn-update:hover { background-color: var(--dark-red); }

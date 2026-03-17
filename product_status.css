@@ -1,0 +1,87 @@
+/* Nova Pixel Color Palette */
+:root {
+    --navy-dark: #050E3C;
+    --blue-deep: #002455;
+    --red-primary: #DC0000;
+    --red-bright: #FF3838;
+    --bg-main: #020617;
+}
+
+.nova-layout {
+    display: flex;
+    margin: 0;
+    background-color: var(--bg-main);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background-color: var(--navy-dark);
+    position: fixed;
+    border-right: 1px solid var(--blue-deep);
+}
+
+.sidebar-logo {
+    padding: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.sidebar-logo span { color: var(--red-bright); }
+
+.nav-links { list-style: none; padding: 0; margin-top: 20px; }
+
+.nav-links li a {
+    display: block;
+    padding: 15px 30px;
+    color: #D3D3D3;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-links li a:hover, .nav-links li a.active {
+    background: var(--blue-deep);
+    color: white;
+    border-left: 4px solid var(--red-primary);
+}
+
+/* Main Content Positioning */
+.dashboard-content {
+    margin-left: 260px; /* Moves content to the right of sidebar */
+    padding: 40px;
+    width: 100%;
+}
+
+.highlight { color: var(--red-bright); }
+
+.btn-primary-nova {
+    background: var(--red-primary);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Table Specifics */
+.status-card {
+    background: var(--navy-dark);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--blue-deep);
+}
+
+.nova-table { width: 100%; border-collapse: collapse; }
+.nova-table th { text-align: left; padding: 15px; color: #888; border-bottom: 2px solid var(--blue-deep); }
+.nova-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+/* Badges */
+.badge { padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+.st-in { background: rgba(255,255,255,0.1); color: white; }
+.st-low { border: 1px solid var(--red-bright); color: var(--red-bright); }
+.st-out { background: var(--red-primary); color: white; }
