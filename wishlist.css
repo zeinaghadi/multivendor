@@ -1,0 +1,208 @@
+/* Wishlist Theme - Store نشمي */
+:root {
+    --nova-red: #DC0000;       /* الأحمر الخاص بنشمي */
+    --nova-dark: #050E3C;      /* الكحلي الغامق */
+    --light-bg: #f4f7f6;       /* خلفية فاتحة ومريحة للعين */
+    --white: #ffffff;
+    --transition: 0.3s all ease-in-out;
+}
+
+body {
+    background-color: var(--light-bg);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* الهيدر والعنوان */
+.wishlist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+}
+
+.wishlist-header h1 {
+    font-size: 2rem;
+    color: var(--nova-dark);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.wishlist-header .highlight {
+    color: var(--nova-red);
+}
+
+/* شبكة المنتجات */
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+/* بطاقة المنتج (Card) */
+.wishlist-item {
+    background: var(--white);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+}
+
+.wishlist-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* صورة المنتج */
+.item-img-container {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.wishlist-item:hover .item-img {
+    transform: scale(1.1);
+}
+
+/* زر الحذف (الـ X) */
+.remove-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--white);
+    color: var(--nova-red);
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 10;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.remove-btn:hover {
+    background: var(--nova-red);
+    color: var(--white);
+    transform: rotate(90deg);
+}
+
+/* تفاصيل المنتج داخل الكارد */
+.item-details {
+    padding: 20px;
+    text-align: center;
+}
+
+.item-name {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--nova-dark);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-price {
+    color: var(--nova-red);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* زر الإضافة للسلة */
+.add-to-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--nova-dark);
+    color: var(--white);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    border: none;
+    width: 100%;
+}
+
+.add-to-cart:hover {
+    background: var(--nova-red);
+    box-shadow: 0 5px 15px rgba(220, 0, 0, 0.3);
+}
+
+/* حالة القائمة الفارغة */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+}
+
+.empty-state i {
+    font-size: 5rem;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.empty-state h2 {
+    color: var(--nova-dark);
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.btn-shop-now {
+    display: inline-block;
+    background: var(--nova-red);
+    color: var(--white);
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: var(--transition);
+}
+
+.btn-shop-now:hover {
+    background: var(--nova-dark);
+    transform: scale(1.05);
+}
+
+/* تحسينات للموبايل */
+@media (max-width: 600px) {
+    .wishlist-grid {
+        grid-template-columns: 1fr;
+    }
+    .wishlist-header h1 {
+        font-size: 1.5rem;
+    }
+}

@@ -1,0 +1,185 @@
+/* --- 1. إعدادات الصفحة الأساسية (Layout) --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.admin-layout {
+    display: flex; /* لترتيب السايد بار والمحتوى جنب بعض */
+    background-color: #f4f7f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- 2. محتوى الصفحة الرئيسي (Main Content) --- */
+.main-content {
+    margin-left: 260px; /* لازم يكون نفس عرض السايد بار عشان ما يدخلوا ببعض */
+    flex-grow: 1;
+    padding: 40px;
+    min-height: 100vh;
+}
+
+/* --- 3. الهيدر (Header) --- */
+.dash-header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e1e8ed;
+    padding-bottom: 20px;
+}
+
+.dash-header h1 {
+    font-size: 1.8rem;
+    color: #001a3d;
+}
+
+.highlight {
+    color: #DC0000; /* أحمر نوڤا */
+}
+
+/* --- 4. تقسيم الصفحة (Wrapper) --- */
+.category-wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* --- 5. الكروت (Cards) --- */
+.add-category-card, 
+.category-list-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef0f2;
+}
+
+/* كرت الإضافة (جهة اليسار) */
+.add-category-card {
+    flex: 1; /* ياخد مساحة أقل */
+    position: sticky;
+    top: 40px;
+}
+
+/* كرت الجدول (جهة اليمين) */
+.category-list-card {
+    flex: 2; /* ياخد مساحة أكبر للجدول */
+}
+
+.add-category-card h3, 
+.category-list-card h3 {
+    margin-bottom: 20px;
+    color: #001a3d;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- 6. الفورم (Form Styles) --- */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    margin-bottom: 6px;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #001a3d;
+    outline: none;
+}
+
+.btn-add-cat {
+    width: 100%;
+    padding: 12px;
+    background-color: #001a3d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-add-cat:hover {
+    background-color: #DC0000;
+}
+
+/* --- 7. الجدول (Table Styles) --- */
+.cat-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cat-table th, 
+.cat-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.cat-table th {
+    background-color: #f8f9fa;
+    color: #95a5a6;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cat-table td strong {
+    color: #2c3e50;
+}
+
+/* الـ Badge لعدد المتاجر */
+.count-badge {
+    background: #e1f5fe;
+    color: #0288d1;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+/* زر الحذف */
+.btn-delete-cat {
+    background: #fff5f5;
+    color: #e74c3c;
+    border: 1px solid #ffdada;
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-delete-cat:hover {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* --- 8. للهواتف (Responsive) --- */
+@media (max-width: 1024px) {
+    .category-wrapper {
+        flex-direction: column;
+    }
+    .add-category-card, .category-list-card {
+        width: 100%;
+    }
+    .main-content {
+        margin-left: 0; /* للما يتسكر السايد بار في الموبايل */
+        padding: 20px;
+    }
+}

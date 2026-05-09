@@ -1,0 +1,86 @@
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.profile-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.profile-card h3 {
+    color: var(--deep-navy);
+    margin-bottom: 10px;
+}
+
+.profile-card hr {
+    margin-bottom: 20px;
+    border: 0.5px solid #eee;
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--navy-blue);
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    border-color: var(--bright-red);
+    outline: none;
+}
+
+
+.btn-save {
+    background-color: var(--dark-red);
+    color: var(--white);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.btn-save:hover {
+    background-color: var(--deep-navy);
+}
+#lang-toggle {
+    background: var(--deep-navy);
+    color: var(--white);
+    border: 1px solid var(--white);
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.has-submenu { position: relative; }
+
+#product-submenu li a {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    color: #bdc3c7; 
+}
+
+#product-submenu li a:hover {
+    color: var(--white);
+    background: transparent;
+    text-decoration: underline;
+}

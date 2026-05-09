@@ -1,87 +1,143 @@
-/* Nova Pixel Color Palette */
+
 :root {
-    --navy-dark: #050E3C;
-    --blue-deep: #002455;
-    --red-primary: #DC0000;
-    --red-bright: #FF3838;
-    --bg-main: #020617;
+    --primary-blue: #001a3d;
+    --accent-red: #DC0000;
+    --bg-light: #f4f7f6;
+    --text-dark: #333;
+    --sidebar-width: 260px;
 }
 
-.nova-layout {
-    display: flex;
+* {
     margin: 0;
-    background-color: var(--bg-main);
-    color: white;
-    font-family: 'Segoe UI', sans-serif;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Sidebar Styling */
+body.nova-layout {
+    display: flex;
+    background-color: var(--bg-light);
+}
+
 .sidebar {
-    width: 260px;
+    width: var(--sidebar-width);
     height: 100vh;
-    background-color: var(--navy-dark);
+    background: var(--primary-blue);
+    color: white;
     position: fixed;
-    border-right: 1px solid var(--blue-deep);
+    padding: 20px 0;
 }
 
 .sidebar-logo {
-    padding: 30px;
-    font-size: 1.5rem;
+    font-size: 24px;
     font-weight: bold;
-    color: white;
     text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
 }
 
-.sidebar-logo span { color: var(--red-bright); }
+.sidebar-logo span {
+    color: var(--accent-red);
+}
 
-.nav-links { list-style: none; padding: 0; margin-top: 20px; }
+.sidebar ul {
+    list-style: none;
+}
 
-.nav-links li a {
-    display: block;
-    padding: 15px 30px;
-    color: #D3D3D3;
+.sidebar ul li {
+    padding: 5px 20px;
+}
+
+.sidebar ul li a {
+    color: #bdc3c7;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    border-radius: 8px;
     transition: 0.3s;
+    font-size: 0.95rem;
+    text-transform: lowercase; 
 }
 
-.nav-links li a:hover, .nav-links li a.active {
-    background: var(--blue-deep);
+.sidebar ul li a i {
+    width: 20px;
+}
+
+.sidebar ul li a:hover, 
+.sidebar ul li a.active {
+    background: rgba(255, 255, 255, 0.1);
     color: white;
-    border-left: 4px solid var(--red-primary);
 }
 
-/* Main Content Positioning */
+.sidebar ul li a.active {
+    border-left: 4px solid var(--accent-red);
+}
+
+
+#product-submenu li a {
+    padding-left: 45px;
+    font-size: 0.85rem;
+}
+
+
 .dashboard-content {
-    margin-left: 260px; /* Moves content to the right of sidebar */
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
     padding: 40px;
-    width: 100%;
 }
 
-.highlight { color: var(--red-bright); }
-
-.btn-primary-nova {
-    background: var(--red-primary);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+.header-flex h1 {
+    font-size: 2rem;
+    color: var(--primary-blue);
 }
 
-/* Table Specifics */
+.highlight {
+    color: var(--accent-red);
+}
+
+
 .status-card {
-    background: var(--navy-dark);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--blue-deep);
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-top: 20px;
 }
 
-.nova-table { width: 100%; border-collapse: collapse; }
-.nova-table th { text-align: left; padding: 15px; color: #888; border-bottom: 2px solid var(--blue-deep); }
-.nova-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.nova-table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-/* Badges */
-.badge { padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-.st-in { background: rgba(255,255,255,0.1); color: white; }
-.st-low { border: 1px solid var(--red-bright); color: var(--red-bright); }
-.st-out { background: var(--red-primary); color: white; }
+.nova-table th {
+    text-align: left;
+    padding: 15px;
+    background-color: #f8f9fa;
+    color: var(--primary-blue);
+    border-bottom: 2px solid #eee;
+    font-weight: 600;
+}
+
+.nova-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.nova-table tr:hover {
+    background-color: #fafafa;
+}
+
+
+.status-approved { color: #2ecc71; font-weight: 600; }
+.status-pending { color: #f1c40f; font-weight: 600; }
+.status-rejected { color: #e74c3c; font-weight: 600; }
+
+.btn-primary-nova:hover {
+    background: #b30000 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 0, 0, 0.3);
+}

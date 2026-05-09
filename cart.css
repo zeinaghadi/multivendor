@@ -1,0 +1,173 @@
+/* Cart Style - Store نشمي */
+:root {
+    --nova-red: #DC0000;
+    --nova-dark: #050E3C;
+    --bg-color: #f4f7f6;
+    --white: #ffffff;
+    --border-color: #eeeeee;
+    --text-muted: #888;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.cart-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+/* قسم المنتجات */
+.cart-items-section {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.cart-header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--nova-dark);
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.item-info {
+    flex-grow: 1;
+}
+
+.item-info h3 {
+    margin: 0 0 5px 0;
+    color: var(--nova-dark);
+}
+
+.item-info p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8f8f8;
+    padding: 8px 15px;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+}
+
+.quantity-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--nova-dark);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.item-price {
+    font-weight: 700;
+    color: var(--nova-red);
+    font-size: 1.2rem;
+    min-width: 100px;
+    text-align: right;
+}
+
+.delete-item {
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1.2rem;
+}
+
+.delete-item:hover {
+    color: var(--nova-red);
+}
+
+/* قسم ملخص الطلب */
+.cart-summary {
+    background: var(--nova-dark);
+    color: var(--white);
+    padding: 35px;
+    border-radius: 20px;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.total-row {
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 15px;
+    margin-top: 15px;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    background: var(--nova-red);
+    color: var(--white);
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    border-radius: 10px;
+    margin-top: 25px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.checkout-btn:hover {
+    background: var(--white);
+    color: var(--nova-red);
+}
+
+.continue-shopping {
+    display: inline-block;
+    margin-top: 25px;
+    color: var(--nova-red);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* للموبايل */
+@media (max-width: 900px) {
+    .cart-container { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,138 @@
+/* --- Nova Admin - Approve Products CSS --- */
+
+:root {
+    --primary: #050E3C;
+    --success: #2ecc71;
+    --danger: #DC0000;
+    --white: #ffffff;
+    --gray-light: #f8f9fa;
+}
+
+/* تأكدي إن الكرت نفسه مش عامل Hidden لأي شي جواه */
+.approval-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eee;
+    overflow: visible !important; /* عشان نضمن أي تأثير ما يختفي */
+    transition: 0.3s;
+}
+
+.approval-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-preview {
+    width: 100%;
+    height: 200px;
+    position: relative;
+}
+
+.product-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.vendor-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--primary);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.card-details {
+    padding: 20px;
+}
+
+.card-details h3 {
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.price-tag {
+    color: var(--primary);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.desc-text {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* --- تنسيق الكبسات لضمان ظهورها --- */
+.approval-actions {
+    display: flex !important; /* إجبار العرض المرن */
+    gap: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    visibility: visible !important; /* لضمان إنها مش مخفية */
+    opacity: 1 !important;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex !important; /* لضمان ظهور المحتوى داخل الكبسة */
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+/* كبسة Accept */
+.btn-accept {
+    background-color: var(--success) !important;
+    color: white !important;
+}
+
+.btn-accept:hover {
+    background-color: #27ae60 !important;
+}
+
+/* كبسة Reject */
+.btn-reject {
+    background-color: var(--danger) !important;
+    color: white !important;
+}
+
+.btn-reject:hover {
+    background-color: #b30000 !important;
+}
+
+/* أيقونات الفونت أوسم داخل الكبسات */
+.btn-action i {
+    font-size: 16px;
+}
+
+/* رسالة النجاح */
+.msg-alert {
+    background: #d4edda;
+    color: #155724;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid #c3e6cb;
+}

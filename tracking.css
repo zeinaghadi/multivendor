@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+
+:root {
+    --navy: #001a3d;
+    --red: #dc0000;
+    --gray: #f8fafc;
+    --border: #e2e8f0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--gray);
+    margin: 0; padding: 20px;
+}
+
+.orders-container { max-width: 850px; margin: auto; }
+
+/* زر العودة */
+.header-top-nav { margin-bottom: 20px; }
+.btn-back {
+    text-decoration: none; color: var(--navy); font-weight: 600;
+    padding: 10px 18px; background: white; border-radius: 10px;
+    border: 1px solid var(--border); transition: 0.3s;
+}
+.btn-back:hover { background: var(--navy); color: white; }
+
+.header-content h1 { font-size: 2rem; margin: 0; color: var(--navy); }
+.header-content p { color: #64748b; margin-top: 5px; }
+
+/* الكرت */
+.order-card {
+    background: white; border-radius: 20px; padding: 25px;
+    margin-bottom: 25px; border: 1px solid var(--border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.order-top { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; }
+.order-number { font-weight: 600; font-size: 1.1rem; }
+.store-tag { color: var(--red); font-size: 0.8rem; font-weight: 600; margin-left: 10px; }
+
+/* الشارات */
+.status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.pending { background: #fffbeb; color: #b45309; }
+.processing { background: #eff6ff; color: #1e40af; }
+.shipped { background: #f0fdf4; color: #15803d; }
+.delivered { background: #f1f5f9; color: #475569; }
+
+/* الخط الزمني */
+.tracking-line-container { display: flex; align-items: center; margin: 35px 0; }
+.step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+.circle { width: 40px; height: 40px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #cbd5e1; transition: 0.4s; z-index: 2; }
+.line { height: 4px; background: #f1f5f9; flex: 1; margin-bottom: 22px; transition: 0.4s; }
+.step-text { font-size: 0.7rem; color: #94a3b8; margin-top: 8px; font-weight: 600; }
+
+.step.active .circle { background: var(--navy); color: white; }
+.step.active .step-text { color: var(--navy); }
+.line.active { background: var(--navy); }
+.step.active:last-child .circle { background: #15803d; }
+
+/* التفاصيل */
+.order-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #f8fafc; padding: 15px; border-radius: 12px; }
+.detail-box label { display: block; font-size: 0.65rem; color: #64748b; text-transform: uppercase; }
+.detail-box span { font-weight: 600; font-size: 0.9rem; }
+.detail-box.full { grid-column: span 2; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+.price { color: var(--red); }
+
+/* الأزرار */
+.order-footer { margin-top: 20px; text-align: right; }
+.btn-action { padding: 10px 25px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; display: inline-block; }
+.btn-primary { background: var(--navy); color: white; }
+.btn-primary:hover { background: var(--red); }
+.btn-outline { border: 1px solid var(--red); color: var(--red); background: white; }
+.complete-status { color: #15803d; font-weight: 600; }
