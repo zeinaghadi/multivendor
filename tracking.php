@@ -293,7 +293,17 @@ $result = mysqli_query($conn, $sql);
 
             <div class="info-grid">
                 <div class="info-item"><label>Total Paid</label><span><?php echo number_format($row['grand_total'], 2); ?> JOD</span></div>
-                <div class="info-item"><label>Method</label><span>Cash on Delivery</span></div>
+                <div class="info-item"><label>Method</label><span>
+                    <?php 
+                $current_order_id = $row['order_id']; 
+                $r_query = "SELECT payement_method FROM reciept WHERE order_id_fk = $current_order_id";
+                $r_result = mysqli_query($conn, $r_query);
+                $r_data = mysqli_fetch_assoc($r_result);
+                $current_payment = $r_data ? $r_data['payement_method'] : 'N/A';
+                echo htmlspecialchars(strtoupper($current_payment)); 
+            ?>
+        </span>
+                </span></div>
                 <div class="info-item" style="grid-column: span 2;"><label>Delivering To</label><span><?php echo htmlspecialchars($row['shipping_address'] ?? 'Customer Address, Jordan'); ?></span></div>
             </div>
 
