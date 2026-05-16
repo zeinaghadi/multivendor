@@ -1,15 +1,18 @@
 <?php
 session_start();
-// 1. الاتصال بقاعدة البيانات
 $conn = mysqli_connect("localhost", "root", "Zz0795426555$", "multivendor_marketplace");
 
 if (!$conn) { die("Connection failed: " . mysqli_connect_error()); }
 mysqli_set_charset($conn, "utf8");
 
-// تحديد الـ User ID
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: test_login.php");
+    exit();
+}
 
-// 2. جلب بيانات السلة
+$user_id =$_SESSION['user_id'];
+
+// cart data
 $sql_cart = "SELECT ci.*, p.product_name, p.product_price 
              FROM cart_items ci 
              JOIN products p ON ci.product_id_fk = p.product_id 
@@ -24,7 +27,6 @@ if (mysqli_num_rows($result_cart) == 0) {
 }
 
 $subtotal = 0;
-$shipping = 2.00; 
 ?>
 
 <!DOCTYPE html>
@@ -244,8 +246,9 @@ $shipping = 2.00;
                             <input type="text" name="last_name" placeholder="Enter last name" required>
                         </div>
                         <div class="form-group full-width">
-                            <label>Mobile Number (Active for WhatsApp)</label>
-                            <input type="tel" name="phone" placeholder="07XXXXXXXX" required>
+                            <label>Mobile Number </label>
+                            <!-- only numbers-->
+                            <input type="text" name="phone" id="phone" placeholder="07XXXXXXXX" maxlength="10" inputmode="numeric" required>
                         </div>
                         <div class="form-group full-width">
                             <label>Delivery City</label>
@@ -307,7 +310,13 @@ $shipping = 2.00;
                             <span><?php echo htmlspecialchars($item['product_name']); ?> <small>(x<?php echo $item['cart_quantity']; ?>)</small></span>
                             <b><?php echo number_format($item_total, 2); ?></b>
                         </div>
-                    <?php endwhile; ?>
+                    <?php endwhile; 
+                    
+                    
+                    $tax_rate = 0.16;
+                    $shipping_fee = $subtotal * $tax_rate;
+                    $grand_total = $subtotal + $shipping_fee;
+                    ?>
                 </div>
 
                 <div class="summary-totals">
@@ -316,12 +325,12 @@ $shipping = 2.00;
                         <span><?php echo number_format($subtotal, 2); ?> JOD</span>
                     </div>
                     <div class="total-line">
-                        <span>Service Fee</span>
-                        <span><?php echo number_format($shipping, 2); ?> JOD</span>
+                        <span>Service Fee (16%)</span>
+                        <span><?php echo number_format($shipping_fee, 2); ?> JOD</span>
                     </div>
                     <div class="total-line grand-total">
                         <span>Grand Total</span>
-                        <span><?php echo number_format($subtotal + $shipping, 2); ?> JOD</span>
+                        <span><?php echo number_format($grand_total, 2); ?> JOD</span>
                     </div>
                 </div>
 
@@ -333,12 +342,20 @@ $shipping = 2.00;
     </div>
 
     <script>
+        // only numbers in phone
+        document.getElementById('phone').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
         function togglePaymentUI(method) {
             const cardBox = document.getElementById('card-info-box');
             document.getElementById('opt-cash').classList.toggle('active', method === 'cash');
             document.getElementById('opt-card').classList.toggle('active', method === 'visa');
             cardBox.style.display = (method === 'visa') ? 'block' : 'none';
-            ['card_no', 'exp', 'cvv'].forEach(id => document.getElementById(id).required = (method === 'visa'));
+            ['card_no', 'exp', 'cvv'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.required = (method === 'visa');
+            });
         }
 
         function validateLuhn(cardNumber) {
@@ -353,28 +370,36 @@ $shipping = 2.00;
         }
 
         document.getElementById('checkout-form').addEventListener('submit', function (e) {
+            const phone = document.getElementById('phone').value;
+            if (phone.length < 10) {
+                e.preventDefault();
+                alert("Please enter a valid 10-digit phone number!");
+                return;
+            }
+
             if (document.querySelector('input[name="payment_method"]:checked').value === 'visa') {
                 const cardNo = document.getElementById('card_no').value;
                 const expValue = document.getElementById('exp').value;
                 
                 if (!validateLuhn(cardNo) || cardNo.replace(/\s/g, '').length < 13) {
-                    e.preventDefault(); alert("رقم البطاقة غير صحيح!"); return;
+                    e.preventDefault(); alert("The card number is incorrect!"); return;
                 }
 
                 const expMatch = expValue.match(/^(\d{2})\/(\d{2})$/);
                 if (!expMatch) {
-                    e.preventDefault(); alert("تنسيق التاريخ غير صحيح (MM/YY)"); return;
+                    e.preventDefault(); alert("Incorrect date format (MM/YY)"); return;
                 }
 
                 const expMonth = parseInt(expMatch[1], 10);
                 const expYear = parseInt("20" + expMatch[2], 10);
                 const now = new Date();
                 if (expMonth < 1 || expMonth > 12 || expYear < now.getFullYear() || (expYear === now.getFullYear() && expMonth < (now.getMonth() + 1))) {
-                    e.preventDefault(); alert("البطاقة منتهية الصلاحية أو البيانات غير صحيحة!");
+                    e.preventDefault(); alert("Expired card or incorrect information!");
                 }
             }
         });
 
+        //for numbers in credit card to look goods
         document.getElementById('card_no').addEventListener('input', e => {
             e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
         });

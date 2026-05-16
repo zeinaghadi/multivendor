@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. الاتصال بقاعدة البيانات
 $conn = mysqli_connect("localhost", "root", "Zz0795426555$", "multivendor_marketplace");
 
 if (!$conn) {
@@ -9,10 +8,15 @@ if (!$conn) {
 }
 mysqli_set_charset($conn, "utf8");
 
-// 2. استقبال رقم الطلب
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: test_login.php");
+    exit();
+}
+
+$user_id =$_SESSION['user_id'];
+
 $order_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// 3. جلب بيانات الطلب
 $query = "SELECT * FROM orders WHERE order_id = $order_id";
 $result = mysqli_query($conn, $query);
 $order_data = mysqli_fetch_assoc($result);
@@ -22,7 +26,7 @@ if (!$order_data) {
     exit();
 }
 
-// 4. جلب طريقة الدفع
+// payement
 $receipt_query = "SELECT payement_method FROM reciept WHERE order_id_fk = $order_id";
 $receipt_res = mysqli_query($conn, $receipt_query);
 $receipt_data = mysqli_fetch_assoc($receipt_res);

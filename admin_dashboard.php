@@ -68,7 +68,7 @@ $result = $conn->query("SELECT vendor_id, store_name, logo_url, vendor_email FRO
             min-height: 100vh;
         }
 
-        /* --- Sidebar (Nova Style) --- */
+        /* --- Sidebar  --- */
         .sidebar {
             width: 280px;
             background: var(--night);

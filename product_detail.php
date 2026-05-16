@@ -5,7 +5,7 @@ mysqli_set_charset($conn, "utf8mb4");
 
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// جلب بيانات المنتج مع اسم المتجر
+//products
 $query = "SELECT p.*, v.category_ID_FK, v.vendor_id, v.store_name 
           FROM products p 
           JOIN vendors v ON p.vendor_id_fk = v.vendor_id 

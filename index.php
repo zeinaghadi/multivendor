@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. الاتصال بقاعدة البيانات
 $host = "localhost";
 $user = "root"; 
 $pass = "Zz0795426555$"; 
@@ -11,7 +10,6 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 mysqli_set_charset($conn, "utf8mb4");
 
-// 2. فحص حالة تسجيل الدخول وجلب عداد السلة
 $is_customer = isset($_SESSION['user_id']);
 $cart_count = 0;
 

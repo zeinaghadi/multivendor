@@ -1,0 +1,156 @@
+/* Checkout Theme - Store نشمي */
+:root {
+    --nova-red: #DC0000;
+    --nova-dark: #050E3C;
+    --bg-color: #f4f7f6;
+    --white: #ffffff;
+    --border-color: #ddd;
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 🛑 الحاوية الرئيسية - توزيع العناصر بجانب بعض */
+.checkout-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr; /* الفورم 60% والملخص 40% */
+    gap: 30px;
+    align-items: start; /* 👈 ضروري جداً عشان الملخص ما ينزل لتحت */
+}
+
+/* تنسيق الكروت */
+.checkout-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.checkout-card h2 {
+    margin-top: 0;
+    color: var(--nova-dark);
+    border-bottom: 3px solid var(--nova-red);
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+}
+
+/* تنسيق الفورم */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    border-color: var(--nova-red);
+    outline: none;
+}
+
+/* 🛑 تثبيت الملخص بجانب الفورم عند النزول */
+aside {
+    position: -webkit-sticky; 
+    position: sticky;
+    top: 20px; /* يثبت على بعد 20px من أعلى الشاشة */
+    height: fit-content;
+}
+
+/* خيارات الدفع */
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#card-info-box {
+    display: none; /* يظهر بالجافا سكريبت */
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px dashed #ccc;
+    margin-top: 10px;
+}
+
+.card-input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* ملخص الطلب */
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.grand-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--nova-red);
+    border-top: 2px solid #eee;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+/* زر التأكيد */
+.place-order-btn {
+    display: block;
+    width: 100%;
+    background: var(--nova-dark);
+    color: white;
+    padding: 18px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.place-order-btn:hover {
+    background: var(--nova-red);
+}
+
+/* الموبايل */
+@media (max-width: 900px) {
+    .checkout-container { grid-template-columns: 1fr; }
+    aside { position: static; }
+}

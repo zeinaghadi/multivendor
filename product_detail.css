@@ -1,0 +1,131 @@
+/* Product Details Page Styles */
+.product-page-wrapper {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: #fff;
+    border-radius: 15px;
+}
+
+/* قسم الصورة */
+.product-visuals {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 450px;
+    position: relative;
+}
+
+.product-visuals i {
+    font-size: 10rem;
+    color: #ececec;
+}
+
+/* قسم المعلومات */
+.product-details-content h1 {
+    font-size: 2.5rem;
+    color: #001a3d;
+    margin-bottom: 10px;
+}
+
+.product-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.p-rating {
+    color: #f1c40f;
+    font-weight: 600;
+}
+
+.p-price {
+    font-size: 2rem;
+    color: #DC0000;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.p-description {
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+/* التحكم بالكمية والأزرار */
+.action-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.qty-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.qty-box input {
+    width: 70px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn-group {
+    display: flex;
+    gap: 15px;
+}
+
+.add-to-cart-btn {
+    flex: 2;
+    background: #001a3d;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-to-cart-btn:hover {
+    background: #002a61;
+    transform: translateY(-2px);
+}
+
+.wishlist-btn {
+    flex: 1;
+    background: #fff;
+    color: #DC0000;
+    border: 2px solid #DC0000;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.wishlist-btn:hover {
+    background: #DC0000;
+    color: #fff;
+}
+
+/* التجاوب مع الموبايل */
+@media (max-width: 768px) {
+    .product-page-wrapper {
+        grid-template-columns: 1fr;
+    }
+}

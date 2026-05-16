@@ -3,9 +3,14 @@ session_start();
 $conn = mysqli_connect("localhost", "root", "Zz0795426555$", "multivendor_marketplace");
 mysqli_set_charset($conn, "utf8mb4");
 
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1;
+if (!isset($_SESSION['user_id'])) {
+    header("Location: test_login.php");
+    exit();
+}
 
-// --- [ قسم المعالجة: حذف وتحديث ] ---
+$user_id = $_SESSION['user_id'];
+
+// update & delete 
 if (isset($_GET['delete_id'])) {
     $id = intval($_GET['delete_id']);
     mysqli_query($conn, "DELETE FROM cart_items WHERE cart_item_id = $id");
@@ -16,7 +21,7 @@ if (isset($_GET['update_id']) && isset($_GET['action'])) {
     $id = intval($_GET['update_id']);
     $action = $_GET['action'];
     
-    // التحقق من المخزون قبل الزيادة
+    // check stock before update
     if ($action == 'plus') {
         $check = mysqli_query($conn, "SELECT ci.cart_quantity, p.product_quantity FROM cart_items ci JOIN products p ON ci.product_id_fk = p.product_id WHERE ci.cart_item_id = $id");
         $data = mysqli_fetch_assoc($check);
@@ -29,7 +34,7 @@ if (isset($_GET['update_id']) && isset($_GET['action'])) {
     header("Location: cart.php"); exit();
 }
 
-// --- [ الاستعلام: جلب البيانات + معرف المتجر ] ---
+
 $sql = "SELECT ci.cart_item_id, p.product_name, p.product_price, p.image_url, p.vendor_id_fk, ci.cart_quantity,
         (p.product_price * ci.cart_quantity) AS total 
         FROM carts c
@@ -154,13 +159,19 @@ $continue_shopping_url = ($row_for_link) ? "store.php?id=" . $row_for_link['vend
                 <span>Subtotal</span>
                 <span>JOD <?php echo number_format($subtotal, 2); ?></span>
             </div>
+            
+            <?php 
+                $service_fee = $subtotal * 0.16; 
+                $grand_total = $subtotal + $service_fee;
+            ?>
+
             <div class="row">
-                <span>Service Fee</span>
-                <span>JOD 2.00</span>
+                <span>Service Fee (16%)</span>
+                <span>JOD <?php echo number_format($service_fee, 2); ?></span>
             </div>
             <div class="row total-row">
                 <span>Total</span>
-                <span>JOD <?php echo number_format($subtotal + 2, 2); ?></span>
+                <span>JOD <?php echo number_format($grand_total, 2); ?></span>
             </div>
 
             <?php if ($subtotal > 0): ?>

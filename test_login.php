@@ -1,8 +1,11 @@
 <?php
 session_start();
 
-// 1. Database Configuration
-$host = "localhost"; $db_user = "root"; $db_pass = "Zz0795426555$"; $db_name = "multivendor_marketplace"; 
+
+$host = "localhost";
+ $db_user = "root"; 
+ $db_pass = "Zz0795426555$"; 
+ $db_name = "multivendor_marketplace"; 
 
 $conn = new mysqli($host, $db_user, $db_pass, $db_name);
 if ($conn->connect_error) { die("Database Connection Failed"); }
@@ -11,7 +14,7 @@ mysqli_set_charset($conn, "utf8");
 $message = "";
 $message_type = "";
 
-// Cookie Check (Remember Me)
+// Remember Me
 $cookie_email = $_COOKIE['user_email'] ?? "";
 $cookie_pass  = $_COOKIE['user_password'] ?? "";
 $cookie_check = isset($_COOKIE['user_email']) ? "checked" : "";
@@ -39,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($user_data = $result->fetch_assoc()) {
                 $db_pass = trim($user_data[$c['pass']]);
                 $is_auth = ($role === 'admin') ? (hash('sha256', $input_password) === $db_pass) : password_verify($input_password, $db_pass);
-
+                //cookies
                 if ($is_auth) {
                     if ($remember) {
                         setcookie("user_email", $input_email, time() + (86400 * 30), "/");
@@ -48,11 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         setcookie("user_email", "", time() - 3600, "/");
                         setcookie("user_password", "", time() - 3600, "/");
                     }
-
+                //create session
                     $_SESSION['user_id'] = $user_data[$c['id']];
                     $_SESSION['role'] = $role;
                     $_SESSION['username'] = $user_data[$c['display']] ?? 'User';
-                    
+                //welcoming
                     $message = "Welcome back, " . $_SESSION['username'] . "!";
                     $message_type = "success";
                     header("refresh:1.2; url=" . $c['redir']);
@@ -274,15 +277,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     function setRole(role, index, btn) {
         document.getElementById('role-input').value = role;
         
-        // تحريك المؤشر (Indicator) بنعومة فائقة
         const indicator = document.getElementById('indicator');
         indicator.style.transform = `translateX(${index * 100}%)`;
         
-        // تغيير حالة الأزرار
+
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        // إخفاء رابط التسجيل للأدمن بسلاسة
+        // إno register for admin
         const regLink = document.getElementById('register-link');
         if(role === 'admin') {
             regLink.style.opacity = '0';

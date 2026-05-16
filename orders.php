@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-// 1. حماية الصفحة
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'vendor') {
-    header("Location: login.php");
+    header("Location: test_login.php");
     exit();
 }
 
@@ -18,7 +18,7 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 mysqli_set_charset($conn, "utf8");
 
-// --- 🔵 2. تحديث حالة الطلب ---
+// update order status
 $message = "";
 $msg_type = "success";
 
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status_btn'])) 
     $o_id = $_POST['order_id'];
     $new_status = $_POST['new_status']; 
 
-    // جلب الحالة الحالية للتأكد أنها ليست Delivered أو Cancelled
+    // عشان يتأكد انه الطلب مش cancelled or delivered
     $check_sql = "SELECT order_status FROM orders WHERE order_id = ? AND vendor_id_fk = ?";
     $c_stmt = $conn->prepare($check_sql);
     $c_stmt->bind_param("ii", $o_id, $v_id);
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status_btn'])) 
     if ($current_res) {
         $old_status = $current_res['order_status'];
         
-        // منع التعديل إذا كان الطلب منتهياً أصلاً
+        // بمنع التعديل اذا الطلب cancelled or delivered
         if ($old_status == 'delivered' || $old_status == 'cancelled') {
             $message = "Cannot update: This order is already $old_status.";
             $msg_type = "error";
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status_btn'])) 
     }
 }
 
-// --- 🛑 3. جلب طلبات الفيندور ---
+
 $sql = "SELECT order_id, customer_id_fk, order_date, grand_total, order_status 
         FROM orders 
         WHERE vendor_id_fk = ? 
@@ -94,7 +94,7 @@ $result = $stmt->get_result();
             min-height: 100vh;
         }
 
-        /* --- Sidebar (Matching Nashmi store Identity) --- */
+        /* --- Sidebar --- */
         .sidebar {
             width: 280px; background: var(--night); color: white;
             padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000;

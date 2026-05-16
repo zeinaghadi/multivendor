@@ -3,9 +3,8 @@ session_start();
 $conn = new mysqli("localhost", "root", "Zz0795426555$", "multivendor_marketplace");
 mysqli_set_charset($conn, "utf8mb4");
 
-// التأكد من تسجيل الدخول
 if (!isset($_SESSION['user_id'])) {
-    echo "<script>alert('يرجى تسجيل الدخول أولاً'); window.location.href='test_login.php';</script>";
+    header("Location: test_login.php");
     exit();
 }
 

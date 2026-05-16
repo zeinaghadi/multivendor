@@ -1,6 +1,6 @@
 <?php
 session_start();
-// 1. حماية الصفحة والتأكد من الرتبة
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'vendor') {
     header("Location: test_login.php"); 
     exit();
@@ -11,23 +11,23 @@ $conn = new mysqli("localhost", "root", "Zz0795426555$", "multivendor_marketplac
 if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 $conn->set_charset("utf8mb4");
 
-// 2. جلب إجمالي المبيعات والطلبات (grand_total)
-$stats_res = $conn->query("SELECT COUNT(order_id) as total_orders, SUM(grand_total) as total_revenue FROM orders WHERE vendor_id_fk = $v_id");
+// Sub total
+$stats_res = $conn->query("SELECT COUNT(order_id) as total_orders, SUM(sub_total) as total_revenue FROM orders WHERE vendor_id_fk = $v_id");
 $stats = $stats_res->fetch_assoc();
 
-// 3. حساب متوسط التقييم (بدون عرض نجوم)
+// avg reviews
 $rating_res = $conn->query("SELECT AVG(rating) as avg_rate, COUNT(review_id) as review_count FROM reviews WHERE vendor_id_fk = $v_id");
 $rating_data = $rating_res->fetch_assoc();
 $avg_rating = round($rating_data['avg_rate'], 1);
 
-// 4. جلب توزيع التقييمات للرسمة الدائرية
+// reviews for chart
 $dist_res = $conn->query("SELECT rating, COUNT(*) as count FROM reviews WHERE vendor_id_fk = $v_id GROUP BY rating");
 $dist = [1=>0, 2=>0, 3=>0, 4=>0, 5=>0];
 while($row = $dist_res->fetch_assoc()){
     $dist[$row['rating']] = $row['count'];
 }
 
-// 5. جلب مبيعات آخر 7 أيام
+// sales for last 7 days
 $sales_data = []; $days_data = [];
 for($i=6; $i>=0; $i--) {
     $date = date('Y-m-d', strtotime("-$i days"));
@@ -58,7 +58,7 @@ for($i=6; $i>=0; $i--) {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-soft); color: var(--night); display: flex; min-height: 100vh; }
 
-        /* --- Sidebar (Nashmi Identity) --- */
+        /* --- Sidebar --- */
         .sidebar {
             width: 280px; background: var(--night); color: white;
             padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000;

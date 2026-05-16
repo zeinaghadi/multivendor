@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. Database Connection
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "Zz0795426555$";
@@ -11,10 +10,15 @@ $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 if (!$conn) { die("Connection failed: " . mysqli_connect_error()); }
 mysqli_set_charset($conn, "utf8");
 
-// 2. User Identification
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 1; 
 
-// 3. Handle Actions
+if (!isset($_SESSION['user_id'])) {
+    header("Location: test_login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Handle Actions
 if (isset($_GET['action']) && isset($_GET['order_id'])) {
     $order_id = intval($_GET['order_id']);
     $action = $_GET['action'];
@@ -42,7 +46,7 @@ if (isset($_GET['action']) && isset($_GET['order_id'])) {
     }
 }
 
-// 4. Fetch Orders
+// Fetch Orders
 $sql = "SELECT * FROM orders WHERE customer_id_fk = $user_id ORDER BY order_id DESC";
 $result = mysqli_query($conn, $sql);
 ?>

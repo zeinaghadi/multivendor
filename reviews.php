@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. Database Connection
 $db_host = "localhost";
 $db_user = "root";
 $db_pass = "Zz0795426555$";
@@ -11,12 +10,16 @@ $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 if (!$conn) { die("Connection failed: " . mysqli_connect_error()); }
 mysqli_set_charset($conn, "utf8");
 
-// Get IDs from URL
-$user_id = $_SESSION['user_id'] ?? 1; 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: test_login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
 $vendor_id = isset($_GET['vendor_id']) ? intval($_GET['vendor_id']) : 0;
 $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
 
-// Security: If no order ID, redirect back
 if ($order_id == 0) {
     header("Location: tracking.php");
     exit();
@@ -131,11 +134,10 @@ if (isset($_POST['submit_review'])) {
             transition: var(--transition);
         }
         
-        /* تأثير النجوم عند الاختيار والتحويم */
         .stars-container input:checked ~ label,
         .stars-container label:hover,
         .stars-container label:hover ~ label {
-            color: #ffb800; /* لون ذهبي دافئ */
+            color: #ffb800; 
             transform: scale(1.2) rotate(10deg);
             text-shadow: 0 0 20px rgba(255, 184, 0, 0.4);
         }
@@ -160,6 +162,13 @@ if (isset($_POST['submit_review'])) {
             border-color: var(--clay);
             background: white;
             box-shadow: 0 10px 25px rgba(167, 111, 88, 0.08);
+        }
+
+        /* --- Actions Container --- */
+        .actions-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         /* --- Submit Button --- */
@@ -187,6 +196,27 @@ if (isset($_POST['submit_review'])) {
             box-shadow: 0 20px 35px rgba(215, 34, 41, 0.25);
         }
 
+        /* --- Skip Button --- */
+        .btn-skip {
+            background: transparent;
+            color: var(--clay);
+            border: 2px solid rgba(167, 111, 88, 0.15);
+            padding: 15px;
+            border-radius: 20px;
+            width: 100%;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: var(--transition);
+        }
+
+        .btn-skip:hover {
+            background: rgba(167, 111, 88, 0.05);
+            border-color: var(--clay);
+            color: var(--night);
+        }
+
         .btn-submit i {
             transition: var(--transition);
         }
@@ -211,11 +241,11 @@ if (isset($_POST['submit_review'])) {
 
 <div class="review-card">
     <div class="icon-box">
-        <i class="fa-solid fa-heart-pulse"></i>
+        <i class="fa-solid fa-comment-dots"></i>
     </div>
 
     <h2>Rate Order #<?php echo $order_id; ?></h2>
-    <p>Your feedback is  important in the bigger picture. Help us and the vendor improve.</p>
+    <p>Your feedback is important in the bigger picture. Help us and the vendor improve.</p>
 
     <form method="POST">
         <div class="stars-container">
@@ -228,9 +258,12 @@ if (isset($_POST['submit_review'])) {
 
         <textarea name="comment" rows="4" placeholder="Share your experience (Optional)..."></textarea>
         
-        <button type="submit" name="submit_review" class="btn-submit">
-            Publish Review <i class="fa-solid fa-arrow-right"></i>
-        </button>
+        <div class="actions-group">
+            <button type="submit" name="submit_review" class="btn-submit">
+                Publish Review <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <a href="index.php" class="btn-skip">Skip for now</a>
+        </div>
     </form>
 </div>
 

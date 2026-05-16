@@ -1,15 +1,13 @@
 <?php
 session_start();
 
-// 1. حماية الصفحة والتأكد من هوية الفيندور
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'vendor') {
-    header("Location: login.php"); 
+    header("Location: test_login.php"); 
     exit();
 }
 
 $v_id = $_SESSION['user_id'];
 
-// إعدادات قاعدة البيانات
 $host = "localhost";
 $user = "root"; 
 $pass = "Zz0795426555$"; 
@@ -19,15 +17,10 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 mysqli_set_charset($conn, "utf8mb4");
 
-/**
- * دالة التحقق الذكي بواسطة Gemini 3 Flash
- * تم تحسين الـ Prompt ليفهم العلاقة المنطقية بين المنتج والكاتوغري
- */
 function checkProductWithAI($name, $desc, $vendorCatName) {
-    $apiKey = "AIzaSyD4A0gvCW0Q2zYpdSV_geTf1NOS_xF3mxA"; 
+    $apiKey = "AIzaSyBYypLxQVsAziO0jG8iQUYEyLHcZDNRMcA"; 
     $url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=" . $apiKey;
 
-    // الـ Prompt الجديد: يركز على الربط المنطقي والسياق
     $prompt = "Act as a smart marketplace auditor. 
                The vendor's shop category is: '$vendorCatName'.
                The product they want to list is: '$name'.
@@ -63,58 +56,59 @@ function checkProductWithAI($name, $desc, $vendorCatName) {
 $message = "";
 $message_type = "error";
 
-// 2. معالجة البيانات عند الإرسال
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['upload_btn'])) {
     $name  = trim($_POST['prod_name']);
     $desc  = trim($_POST['description']);
-    $price = $_POST['price'];
-    $qty   = $_POST['stock'];
+    $price = floatval($_POST['price']); // التأكد من أنه رقم عشري
+    $qty   = intval($_POST['stock']); 
     
-    // جلب اسم الكاتوغري الخاص بالفيندور
-    $v_stmt = $conn->prepare("
-        SELECT c.category_name 
-        FROM vendors v 
-        JOIN categories c ON v.category_ID_FK = c.category_id 
-        WHERE v.vendor_id = ?
-    ");
-    $v_stmt->bind_param("i", $v_id);
-    $v_stmt->execute();
-    $v_res = $v_stmt->get_result();
-    $v_row = $v_res->fetch_assoc();
-    $v_category_name = $v_row['category_name'] ?? 'General';
+    // التحقق من السعر والكمية في PHP
+    if ($price < 0 || $qty < 0) {
+        $message = "Price and Stock quantity cannot be negative.";
+    } else {
+        $v_stmt = $conn->prepare("
+            SELECT c.category_name 
+            FROM vendors v 
+            JOIN categories c ON v.category_ID_FK = c.category_id 
+            WHERE v.vendor_id = ?
+        ");
+        $v_stmt->bind_param("i", $v_id);
+        $v_stmt->execute();
+        $v_res = $v_stmt->get_result();
+        $v_row = $v_res->fetch_assoc();
+        $v_category_name = $v_row['category_name'] ?? 'General';
 
-    // إعدادات الصورة
-    $target_dir = "uploads/";
-    if (!is_dir($target_dir)) { mkdir($target_dir, 0777, true); }
-    
-    $image_name = time() . "_" . basename($_FILES["prod_image"]["name"]);
-    $target_file = $target_dir . $image_name;
+        $target_dir = "uploads/";
+        if (!is_dir($target_dir)) { mkdir($target_dir, 0777, true); }
+        
+        $image_name = time() . "_" . basename($_FILES["prod_image"]["name"]);
+        $target_file = $target_dir . $image_name;
 
-    if(getimagesize($_FILES["prod_image"]["tmp_name"]) !== false) {
-        if (move_uploaded_file($_FILES["prod_image"]["tmp_name"], $target_file)) {
-            
-            // استشارة الذكاء الاصطناعي
-            $ai_decision = checkProductWithAI($name, $desc, $v_category_name);
-            $final_status = (strpos($ai_decision, 'APPROVED') !== false) ? "approved" : "pending";
+        if(getimagesize($_FILES["prod_image"]["tmp_name"]) !== false) {
+            if (move_uploaded_file($_FILES["prod_image"]["tmp_name"], $target_file)) {
+                
+                $ai_decision = checkProductWithAI($name, $desc, $v_category_name);
+                $final_status = (strpos($ai_decision, 'APPROVED') !== false) ? "approved" : "pending";
 
-            $sql = "INSERT INTO products (product_name, product_description, product_price, product_quantity, image_url, approved_by_admin, product_created_at, vendor_id_fk) 
-                    VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)";
-            
-            if ($stmt = $conn->prepare($sql)) {
-                $stmt->bind_param("ssdissi", $name, $desc, $price, $qty, $target_file, $final_status, $v_id);
-                if ($stmt->execute()) {
-                    if ($final_status == "approved") {
-                        $message = "Smart Success! Product automatically approved for $v_category_name.";
-                        $message_type = "success";
-                    } else {
-                        $message = "Listing received. AI flagged it for admin review as it seems outside your category.";
-                        $message_type = "success";
-                    }
-                } else { $message = "Database error: Failed to save product."; }
-                $stmt->close();
-            }
-        } else { $message = "Upload failed. Check directory permissions."; }
-    } else { $message = "Invalid image file."; }
+                $sql = "INSERT INTO products (product_name, product_description, product_price, product_quantity, image_url, approved_by_admin, product_created_at, vendor_id_fk) 
+                        VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)";
+                
+                if ($stmt = $conn->prepare($sql)) {
+                    $stmt->bind_param("ssdissi", $name, $desc, $price, $qty, $target_file, $final_status, $v_id);
+                    if ($stmt->execute()) {
+                        if ($final_status == "approved") {
+                            $message = "Smart Success! Product automatically approved for $v_category_name.";
+                            $message_type = "success";
+                        } else {
+                            $message = "Listing received. AI flagged it for admin review as it seems outside your category.";
+                            $message_type = "success";
+                        }
+                    } else { $message = "Database error: Failed to save product."; }
+                    $stmt->close();
+                }
+            } else { $message = "Upload failed. Check directory permissions."; }
+        } else { $message = "Invalid image file."; }
+    }
 }
 ?>
 
@@ -134,7 +128,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['upload_btn'])) {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-soft); color: var(--night); display: flex; min-height: 100vh; }
         
-        /* --- Sidebar --- */
         .sidebar { width: 280px; background: var(--night); color: white; padding: 40px 20px; position: fixed; height: 100vh; }
         .sidebar-logo { font-size: 1.8rem; font-weight: 800; margin-bottom: 50px; text-align: center; }
         .sidebar-logo span { color: var(--primary-red); }
@@ -142,7 +135,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['upload_btn'])) {
         .sidebar ul li a { color: rgba(255,255,255,0.6); text-decoration: none; padding: 16px 22px; display: flex; align-items: center; gap: 15px; border-radius: 20px; transition: var(--transition); font-weight: 600; }
         .sidebar ul li a.active { background: var(--primary-red); color: white; }
 
-        /* --- Main Content --- */
         .main-content { margin-left: 280px; padding: 50px; width: calc(100% - 280px); }
         .form-card { background: var(--white); padding: 45px; border-radius: 40px; box-shadow: 0 20px 50px rgba(23, 5, 5, 0.04); max-width: 950px; }
         
@@ -206,11 +198,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['upload_btn'])) {
                     </div>
                     <div class="form-group">
                         <label>Price (JOD)</label>
-                        <input type="number" name="price" step="0.01" required>
+                        <input type="number" name="price" step="0.01" min="0" required>
                     </div>
                     <div class="form-group full-width">
                         <label>Initial Stock</label>
-                        <input type="number" name="stock" required>
+                        <input type="number" name="stock" min="0" required>
                     </div>
                     <div class="form-group full-width">
                         <label>Detailed Description</label>

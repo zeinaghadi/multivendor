@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 1. حماية الصفحة وسحب الـ ID
+
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'vendor') {
     header("Location: login.php"); 
     exit();
@@ -18,7 +18,7 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 mysqli_set_charset($conn, "utf8");
 
-// 2. جلب المنتجات باستخدام Prepared Statements
+
 $sql = "SELECT product_id, product_name, product_quantity, product_price, approved_by_admin 
         FROM products 
         WHERE vendor_id_fk = ? 
@@ -59,7 +59,7 @@ $result = $stmt->get_result();
             min-height: 100vh;
         }
 
-        /* --- Sidebar (Matched with Dashboard) --- */
+        /* --- Sidebar  --- */
         .sidebar {
             width: 280px;
             background: var(--night);

@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// 1. Protection & Database
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'vendor') {
-    header("Location: login.php");
+    header("Location: test_login.php");
     exit();
 }
 $v_id = $_SESSION['user_id'];
@@ -16,10 +15,9 @@ mysqli_set_charset($conn, "utf8mb4");
 $message = "";
 $message_type = "success";
 
-// --- Delete Logic ---
+//Delete
 if (isset($_POST['confirm_delete'])) {
     $delete_id = mysqli_real_escape_string($conn, $_POST['product_to_delete']);
-    // التأكد أن الحذف يتم فقط لمنتج يخص الفيندور وحالته approved
     $sql = "DELETE FROM products WHERE product_id = '$delete_id' AND vendor_id_fk = '$v_id' AND approved_by_admin = 'approved'";
     if ($conn->query($sql)) {
         $message = "Product removed successfully.";
@@ -30,26 +28,37 @@ if (isset($_POST['confirm_delete'])) {
     }
 }
 
-// --- Bulk Update Logic ---
+//Update
 if (isset($_POST['update_all'])) {
     if (isset($_POST['product_id'])) {
+        $has_negative = false;
         foreach ($_POST['product_id'] as $index => $id) {
             $id = mysqli_real_escape_string($conn, $id);
             $name = mysqli_real_escape_string($conn, $_POST['name'][$index]);
-            $price = $_POST['price'][$index];
-            $stock = $_POST['stock'][$index];
+            $price = floatval($_POST['price'][$index]);
+            $stock = intval($_POST['stock'][$index]);
 
-            // التعديل يتم فقط للمنتجات الـ approved
+            // التأكد من عدم وجود قيم سالبة في PHP
+            if ($price < 0 || $stock < 0) {
+                $has_negative = true;
+                continue;
+            }
+
             $update_query = "UPDATE products SET product_name='$name', product_price='$price', product_quantity='$stock' 
                              WHERE product_id='$id' AND vendor_id_fk = '$v_id' AND approved_by_admin = 'approved'";
             $conn->query($update_query);
         }
-        $message = "Inventory updated successfully!";
-        $message_type = "success";
+        
+        if ($has_negative) {
+            $message = "Some items were skipped because Price/Stock cannot be negative.";
+            $message_type = "error";
+        } else {
+            $message = "Inventory updated successfully!";
+            $message_type = "success";
+        }
     }
 }
 
-// التعديل الأساسي هنا: جلب فقط المنتجات الـ approved
 $result = $conn->query("SELECT * FROM products WHERE vendor_id_fk = '$v_id' AND approved_by_admin = 'approved' ORDER BY product_id DESC");
 ?>
 
@@ -81,7 +90,6 @@ $result = $conn->query("SELECT * FROM products WHERE vendor_id_fk = '$v_id' AND 
             min-height: 100vh;
         }
 
-        /* --- Sidebar --- */
         .sidebar {
             width: 280px; background: var(--night); color: white;
             padding: 40px 20px; position: fixed; height: 100vh; z-index: 1000;
@@ -97,7 +105,6 @@ $result = $conn->query("SELECT * FROM products WHERE vendor_id_fk = '$v_id' AND 
         .sidebar ul li a:hover, .sidebar ul li a.active { background: rgba(215, 34, 41, 0.1); color: white; }
         .sidebar ul li a.active { background: var(--primary-red); box-shadow: 0 10px 20px rgba(215, 34, 41, 0.2); }
 
-        /* --- Main Content --- */
         .main-content { margin-left: 280px; padding: 50px; width: calc(100% - 280px); animation: fadeIn 0.8s ease-out; }
 
         header { 
@@ -227,11 +234,13 @@ $result = $conn->query("SELECT * FROM products WHERE vendor_id_fk = '$v_id' AND 
                         <div style="display: flex; gap: 15px;">
                             <div class="card-group" style="flex: 1.2;">
                                 <label><i class="fa-solid fa-tag"></i> Price (JOD)</label>
-                                <input type="number" name="price[]" step="0.01" value="<?= $row['product_price'] ?>" class="card-input">
+                                <!-- إضافة min="0" لمنع السعر السالب -->
+                                <input type="number" name="price[]" step="0.01" min="0" value="<?= $row['product_price'] ?>" class="card-input">
                             </div>
                             <div class="card-group" style="flex: 0.8;">
                                 <label><i class="fa-solid fa-layer-group"></i> Qty</label>
-                                <input type="number" name="stock[]" value="<?= $row['product_quantity'] ?>" class="card-input">
+                                <!-- إضافة min="0" لمنع الكمية السالبة -->
+                                <input type="number" name="stock[]" min="0" value="<?= $row['product_quantity'] ?>" class="card-input">
                             </div>
                         </div>
 

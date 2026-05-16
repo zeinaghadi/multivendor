@@ -8,7 +8,7 @@ if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 $conn->set_charset("utf8mb4");
 
 // 2. إعدادات Gemini API
-$api_Key = "AIzaSyD4A0gvCW0Q2zYpdSV_geTf1NOS_xF3mxA"; 
+$api_Key = "AIzaSyBYypLxQVsAziO0jG8iQUYEyLHcZDNRMcA"; 
 $api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=" . $api_Key;
 $search_query = "";
 $ai_keywords_list = [];
